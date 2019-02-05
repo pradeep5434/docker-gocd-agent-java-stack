@@ -18,6 +18,7 @@ RUN mkdir -p /opt/gradle && \
 RUN mkdir -p /tmp/gradle-setup && \
 		cd /tmp/gradle-setup && \
 		/opt/gradle/gradle-${GRADLE_VERSION}/bin/gradle wrapper && \
+		sed -ie 's/https/http/g' gradle/wrapper/gradle-wrapper.properties && \
 		./gradlew  && \
 		cp -R /root/.gradle /home/go/ && \
 		chown -R go:go /home/go/ && \
