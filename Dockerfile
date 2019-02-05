@@ -17,7 +17,7 @@ RUN mkdir -p /opt/gradle && \
 # Cache Gradle distribution locally
 RUN mkdir -p /tmp/gradle-setup && \
 		cd /tmp/gradle-setup && \
-		/opt/gradle/gradle-${GRADLE_VERSION}/bin/gradle wrapper && \
+		/opt/gradle/gradle-${GRADLE_VERSION}/bin/gradle wrapper --distribution-type all && \
 		sed -ie 's/https/http/g' gradle/wrapper/gradle-wrapper.properties && \
 		./gradlew  && \
 		cp -R /root/.gradle /home/go/ && \
