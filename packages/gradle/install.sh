@@ -25,8 +25,6 @@ function cache_gradle_version {
   /opt/gradle/gradle-${GRADLE_VERSION}/bin/gradle wrapper --gradle-version ${GRADLE_VERSION_TO_CACHE} --distribution-type ${GRADLE_DISTRIBUTION_TYPE}
   sed -ie 's/https/http/g' gradle/wrapper/gradle-wrapper.properties
   ./gradlew
-  cp -R /root/.gradle /home/go/
-  chown -R go:go /home/go/
   rm -rf /tmp/gradle-setup
 }
 
@@ -37,3 +35,7 @@ while read -r line; do
   cache_gradle_version ${GRADLE_VERSION_TO_CACHE} ${GRADLE_DISTRIBUTION_TYPE}
   echo "Cached the --gradle-version ${GRADLE_VERSION_TO_CACHE} with --distribution-type ${GRADLE_DISTRIBUTION_TYPE}"
 done < "${CWD}/versions_to_cache.txt"
+
+# Move all the cached versions to go user at one shot instead of multiple times
+cp -R /root/.gradle /home/go/
+chown -R go:go /home/go/
