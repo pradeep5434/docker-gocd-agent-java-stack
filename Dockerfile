@@ -7,5 +7,6 @@ WORKDIR /goagent-setup
 
 # Add all the required package scripts to the docker
 ADD packages /goagent-setup
-	
+ADD docker-entrypoint.d /docker-entrypoint.d/
+
 RUN /goagent-setup/run.sh
