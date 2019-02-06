@@ -28,13 +28,13 @@ function cache_gradle_version {
   rm -rf /tmp/gradle-setup
 }
 
-while read line; do
+cat "${CWD}/versions_to_cache.txt" | while read line; do
   GRADLE_VERSION_TO_CACHE=$(echo $line | cut -f1 -d,)
   GRADLE_DISTRIBUTION_TYPE=$(echo $line | cut -f2 -d,)
   echo "Installing Version=${GRADLE_VERSION_TO_CACHE} with type as ${GRADLE_DISTRIBUTION_TYPE}"
   cache_gradle_version ${GRADLE_VERSION_TO_CACHE} ${GRADLE_DISTRIBUTION_TYPE}
   echo "Cached the --gradle-version ${GRADLE_VERSION_TO_CACHE} with --distribution-type ${GRADLE_DISTRIBUTION_TYPE}"
-done < "${CWD}/versions_to_cache.txt"
+done
 
 # Move all the cached versions to go user at one shot instead of multiple times
 cp -R /root/.gradle /home/go/
