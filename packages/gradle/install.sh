@@ -28,7 +28,7 @@ function cache_gradle_version {
   rm -rf /tmp/gradle-setup
 }
 
-while read -r line; do
+while read line; do
   GRADLE_VERSION_TO_CACHE=$(echo $line | cut -f1 -d,)
   GRADLE_DISTRIBUTION_TYPE=$(echo $line | cut -f2 -d,)
   echo "Installing Version=${GRADLE_VERSION_TO_CACHE} with type as ${GRADLE_DISTRIBUTION_TYPE}"
