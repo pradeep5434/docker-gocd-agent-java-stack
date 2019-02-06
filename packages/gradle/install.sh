@@ -15,13 +15,12 @@ curl -L -v "https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-a
 unzip -d /opt/gradle /tmp/gradle-${GRADLE_VERSION}-all.zip
 rm -f /tmp/gradle-${GRADLE_VERSION}-all.zip
 
-# Cache a Gradle distribution locally
-function cache_gradle_version {
-  GRADLE_VERSION_TO_CACHE=$1
-  GRADLE_DISTRIBUTION_TYPE=${2:-"all"}
+cat "${CWD}/versions_to_cache.txt" | while read line; do
+  GRADLE_VERSION_TO_CACHE=$(echo $line | cut -f1 -d,)
+  GRADLE_DISTRIBUTION_TYPE=$(echo $line | cut -f2 -d,)
+  echo "Installing Version=${GRADLE_VERSION_TO_CACHE} with type as ${GRADLE_DISTRIBUTION_TYPE}"
 
   TEMP_DIR="/tmp/gradle-setup-${GRADLE_VERSION_TO_CACHE}-${GRADLE_DISTRIBUTION_TYPE}"
-  
   mkdir -p ${TEMP_DIR}
   pushd ${TEMP_DIR}
     /opt/gradle/gradle-${GRADLE_VERSION}/bin/gradle wrapper --gradle-version ${GRADLE_VERSION_TO_CACHE} --distribution-type ${GRADLE_DISTRIBUTION_TYPE}
@@ -29,13 +28,7 @@ function cache_gradle_version {
     ./gradlew
   popd
   rm -rf ${TEMP_DIR}
-}
 
-cat "${CWD}/versions_to_cache.txt" | while read line; do
-  GRADLE_VERSION_TO_CACHE=$(echo $line | cut -f1 -d,)
-  GRADLE_DISTRIBUTION_TYPE=$(echo $line | cut -f2 -d,)
-  echo "Installing Version=${GRADLE_VERSION_TO_CACHE} with type as ${GRADLE_DISTRIBUTION_TYPE}"
-  cache_gradle_version ${GRADLE_VERSION_TO_CACHE} ${GRADLE_DISTRIBUTION_TYPE}
   echo "Cached the --gradle-version ${GRADLE_VERSION_TO_CACHE} with --distribution-type ${GRADLE_DISTRIBUTION_TYPE}"
 done
 
