@@ -20,12 +20,13 @@ function cache_gradle_version {
   GRADLE_VERSION_TO_CACHE=$1
   GRADLE_DISTRIBUTION_TYPE=${2:-"all"}
   
-  mkdir -p /tmp/gradle-setup
-  cd /tmp/gradle-setup
-  /opt/gradle/gradle-${GRADLE_VERSION}/bin/gradle wrapper --gradle-version ${GRADLE_VERSION_TO_CACHE} --distribution-type ${GRADLE_DISTRIBUTION_TYPE}
-  sed -ie 's/https/http/g' gradle/wrapper/gradle-wrapper.properties
-  ./gradlew
-  rm -rf /tmp/gradle-setup
+  mkdir -p /tmp/gradle-setup-${GRADLE_VERSION_TO_CACHE}-${GRADLE_DISTRIBUTION_TYPE}
+  pushd /tmp/gradle-setup
+    /opt/gradle/gradle-${GRADLE_VERSION}/bin/gradle wrapper --gradle-version ${GRADLE_VERSION_TO_CACHE} --distribution-type ${GRADLE_DISTRIBUTION_TYPE}
+    sed -ie 's/https/http/g' gradle/wrapper/gradle-wrapper.properties
+    ./gradlew
+  popd
+  rm -rf /tmp/gradle-setup-${GRADLE_VERSION_TO_CACHE}-${GRADLE_DISTRIBUTION_TYPE}
 }
 
 cat "${CWD}/versions_to_cache.txt" | while read line; do
