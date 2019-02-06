@@ -12,7 +12,12 @@ ls ${PACKAGES_ROOT_DIR}/ | while read package; do
   echo "Checking for an install script for ${package}"
   if [ -e "${package}/install.sh" ]; then
     echo "Attempting to install package - ${package}"
-    bash ${package}/install.sh
+
+    # Run the install from within each package folder directly and not from PACKAGES_ROOT_DIR
+    pushd ${package}
+      bash install.sh
+    popd
+
     echo "${package} installation completed"
   fi
 done
