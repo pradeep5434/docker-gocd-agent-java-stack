@@ -15,7 +15,7 @@ curl -L -v "https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-a
 unzip -d /opt/gradle /tmp/gradle-${GRADLE_VERSION}-all.zip
 rm -f /tmp/gradle-${GRADLE_VERSION}-all.zip
 
-cat "${CWD}/versions_to_cache.txt" | while read LINE; do
+for LINE in $(cat "${CWD}/versions_to_cache.txt"); do
   GRADLE_VERSION_TO_CACHE=$(echo $LINE | cut -f1 -d,)
   GRADLE_DISTRIBUTION_TYPE=$(echo $LINE | cut -f2 -d,)
   echo "Installing Version=${GRADLE_VERSION_TO_CACHE} with type as ${GRADLE_DISTRIBUTION_TYPE}"
