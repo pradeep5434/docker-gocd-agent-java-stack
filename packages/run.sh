@@ -21,3 +21,6 @@ ls ${PACKAGES_ROOT_DIR}/ | while read package; do
     echo "${package} installation completed"
   fi
 done
+
+# Making sure the /go-agent is owned by go user
+chown -R go:go /go-agent/
